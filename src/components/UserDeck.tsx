@@ -1,11 +1,15 @@
 import React from "react";
 import { Box, Flex, Center } from "@chakra-ui/layout";
 import { CardGrid } from "./CardGrid";
-import filteredArray from "../quickType/RitualBeast.json";
+import TestMainDeck from "../quickType/RitualBeast.json";
+import TestExtraDeck from "../quickType/RitualBeastExtra.json";
+import TestSideDeck from "../quickType/RitualBeastSide.json";
 import { Spacer } from "@chakra-ui/react";
 
 const UserDeck = () => {
-  const { data } = filteredArray;
+  const { data: mainData } = TestMainDeck;
+  const { data: extraData } = TestExtraDeck;
+  const { data: sideData } = TestSideDeck;
 
   return (
     <Flex width="100%" flexDir="column">
@@ -20,7 +24,7 @@ const UserDeck = () => {
         flex="1"
         p="2.5px"
       >
-        <CardGrid filteredArray={data} />
+        <CardGrid filteredArray={mainData} />
       </Box>
       <Spacer m="5px" />
       <Box
@@ -31,7 +35,7 @@ const UserDeck = () => {
         flex="1"
         p="2.5px"
       >
-        <CardGrid filteredArray={data} />
+        <CardGrid filteredArray={extraData} />
       </Box>
 
       <Center marginY="5px" textColor="white" fontWeight="bold">
@@ -45,7 +49,7 @@ const UserDeck = () => {
         flex="1"
         p="2.5px"
       >
-        <CardGrid filteredArray={data} />
+        <CardGrid filteredArray={sideData} />
       </Box>
     </Flex>
   );
