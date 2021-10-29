@@ -23,7 +23,7 @@ import {
 
 export const CardFilter = ({ setFilteredArray }: any) => {
   // Contiene el criterio de busqueda del input field
-  const [inputValue, setInputValue] = useState("Traptrix");
+  const [inputValue, setInputValue] = useState("Sky Striker");
 
   const initialSetup = async () => {
     if (inputValue.length === 0) return;

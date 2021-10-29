@@ -4,13 +4,13 @@ import { Image } from "@chakra-ui/image";
 interface Images {
   id: string;
   url: string;
-  width: number;
+  width?: number;
 }
 
-export const Card = ({ id, url, width }: Images) => {
-  const ConvertToVW = () => width.toString() + "%";
+export const Card = ({ id, url, width = 25 }: Images) => {
+  const ConvertToPercent = () => width.toString() + "%";
 
-  const widthInVW = ConvertToVW();
+  const widthInPercent = ConvertToPercent();
 
-  return <Image width={widthInVW} padding="1px" src={url} alt="" />;
+  return <Image width={widthInPercent} padding="1.5px" src={url} alt="" />;
 };

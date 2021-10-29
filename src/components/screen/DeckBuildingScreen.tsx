@@ -6,6 +6,14 @@ import Navbar from "../Navbar";
 import UserDeck from "../UserDeck";
 import { Box, Center, Text } from "@chakra-ui/layout";
 
+// "banlist_info": {
+//   "ban_tcg": "Limited",
+//   "ban_ocg": "Semi-Limited"
+// },
+
+// Color Picker: https://coolors.co/59c3c3-52489c-ebebeb-cad2c5-84a98c
+// En mobile: Al tipear en el search, se sobrepone el navbar.
+
 export const DeckBuildingScreen = () => {
   // Este array contiene los resultados del fetch.
   const [filteredArray, setFilteredArray] = useState<YugiCard[]>();
@@ -20,7 +28,11 @@ export const DeckBuildingScreen = () => {
         <UserDeck />
         <CardSearchNavBar setFilteredArray={(e: any) => setFilteredArray(e)} />
 
-        <Box>{filteredArray && <CardGrid filteredArray={filteredArray} />}</Box>
+        <Box>
+          {filteredArray && (
+            <CardGrid filteredArray={filteredArray} cardWidth={20} />
+          )}
+        </Box>
       </Box>
 
       <Box position="relative" width="100%" paddingY="20px">

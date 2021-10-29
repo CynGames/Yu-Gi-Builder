@@ -27,7 +27,7 @@ export const CardGrid = ({ filteredArray }: YugiCard[] | any) => {
   }, [filterImages]);
 
   const MapCards = (images: Images[] | undefined): React.ReactNode => {
-    return images?.map((img) => <Card key={img.id} {...img} width={20} />);
+    return images?.map((img) => <Card key={img.id} {...img} />);
   };
 
   return <Flex wrap="wrap">{MapCards(images)}</Flex>;
