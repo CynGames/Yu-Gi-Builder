@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./style/index.css";
 import YuGiBuilderApp from "./YuGiBuilderApp";
 import reportWebVitals from "./reportWebVitals";
 

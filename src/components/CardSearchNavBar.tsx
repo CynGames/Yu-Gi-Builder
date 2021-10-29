@@ -1,11 +1,11 @@
-import React from "react";
+import { Box } from "@chakra-ui/layout";
 import { CardFilter } from "./CardFilter";
 
 const CardSearchNavBar = ({ setFilteredArray }: any) => {
   return (
-    <div>
+    <Box>
       <CardFilter setFilteredArray={(e: any) => setFilteredArray(e)} />
-    </div>
+    </Box>
   );
 };
 

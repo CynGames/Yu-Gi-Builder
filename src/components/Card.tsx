@@ -1,15 +1,16 @@
-import { Box } from "@chakra-ui/layout";
 import React from "react";
+import { Image } from "@chakra-ui/image";
 
 interface Images {
   id: string;
   url: string;
+  width: number;
 }
 
-export const Card = ({ id, url }: Images) => {
-  return (
-    <Box width="33vw">
-      <img src={url} alt="" />
-    </Box>
-  );
+export const Card = ({ id, url, width }: Images) => {
+  const ConvertToVW = () => width.toString() + "%";
+
+  const widthInVW = ConvertToVW();
+
+  return <Image width={widthInVW} padding="1px" src={url} alt="" />;
 };
