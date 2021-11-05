@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { CardGrid } from "../CardGrid";
-import { YugiCard } from "../../quickType/YugiCard";
+import { YugiohCards } from "../../quickType/YugiCard";
 import CardSearchNavBar from "../CardSearchNavBar";
 import Navbar from "../Navbar";
 import UserDeck from "../UserDeck";
@@ -15,6 +15,14 @@ import { Box, Center, Text } from "@chakra-ui/layout";
 // Acordarse de agregar indicadores de limited, semi o forbidden
 // En mobile: Al tipear en el search, se sobrepone el navbar.
 
+// REFACTOR STATE CONTROLLER:
+// Necesito controlar ahora mismo:
+// - Clicked Card
+// - Selected Main, Extra y Side Decks
+// - Saved/Selected Player Deck.
+//
+// A futuro: Auth, Prices?
+
 // To-do para crear decks:
 // Sacar la informacion de la carta con un click.
 // Copiarla a un nuevo yugi[]
@@ -22,9 +30,11 @@ import { Box, Center, Text } from "@chakra-ui/layout";
 
 // Agregar funcionalidad para el side deck
 
-export const DeckBuildingScreen = () => {
+/// Consulta JSX.Element
+
+export const DeckBuildingScreen = (): JSX.Element => {
   // Este array contiene los resultados del fetch.
-  const [filteredArray, setFilteredArray] = useState<YugiCard[]>();
+  const [filteredArray, setFilteredArray] = useState<YugiohCards[]>();
 
   return (
     <Box bg="#392B58">

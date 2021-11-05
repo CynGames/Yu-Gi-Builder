@@ -1,61 +1,51 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { YugiCard } from "../quickType/YugiCard";
-import { Box, Text, Flex, HStack, Center } from "@chakra-ui/layout";
+import { Text, Flex, HStack, Center } from "@chakra-ui/layout";
 import { Input } from "@chakra-ui/input";
-import { SearchIcon, StarIcon } from "@chakra-ui/icons";
+import { SearchIcon } from "@chakra-ui/icons";
 import { Button, Spacer } from "@chakra-ui/react";
 import { Icon } from "@chakra-ui/react";
 import { FaFilter } from "react-icons/fa";
 import { RiFilter3Line } from "react-icons/ri";
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuIcon,
-  MenuCommand,
-  MenuDivider,
-} from "@chakra-ui/react";
+import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
+import { useActions } from "./hooks/useActions";
+import { useTypedSelector } from "./hooks/useTypedSelector";
 
-export const CardFilter = ({ setFilteredArray }: any) => {
+// Mejor forma de pasar props mediante redux a hijos. (setFilteredArray)
+// Que type ponerle a los setState pasados como props.
+// Re-render hell
+
+export const CardFilter = ({ setFilteredArray }: any): JSX.Element => {
   // Contiene el criterio de busqueda del input field
-  const [inputValue, setInputValue] = useState("Sky Striker");
-
-  const initialSetup = async () => {
-    if (inputValue.length === 0) return;
-
-    const { data } = await getCard(inputValue);
-    setFilteredArray(data);
-  };
-
-  const handleFormSubmit = async (e?: React.SyntheticEvent) => {
-    e?.preventDefault();
-
-    if (inputValue.length === 0) return;
-
-    const { data } = await getCard(inputValue);
-
-    setFilteredArray(data);
-    setInputValue("");
-  };
+  const [inputValue, setInputValue] = useState("");
+  const { fetchCards } = useActions();
+  const { data: cards } = useTypedSelector((state) => state.fetch);
 
   useEffect(() => {
     initialSetup();
   }, []);
 
-  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
-    setInputValue(e.currentTarget.value);
+  const initialSetup = async () => {
+    if (inputValue.length === 0) return;
+
+    await fetchCards(inputValue);
+
+    setFilteredArray(cards?.data);
   };
 
-  const getCard = async (inputValue: string) => {
-    const url = `https://db.ygoprodeck.com/api/v7/cardinfo.php?fname=${inputValue}`;
-    const { data } = await axios.get<YugiCard>(url);
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-    return data;
+    if (inputValue.length === 0) return;
+
+    await fetchCards(inputValue);
+
+    setFilteredArray(cards?.data);
+
+    setInputValue("");
+  };
+
+  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setInputValue(e.currentTarget.value);
   };
 
   return (

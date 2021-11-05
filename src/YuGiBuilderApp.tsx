@@ -1,4 +1,6 @@
 import { ChakraProvider } from "@chakra-ui/react";
+import { Provider } from "react-redux";
+import { store } from "./components/state";
 import { DeckBuildingScreen } from "./components/screen/DeckBuildingScreen";
 
 // Yugi API https://db.ygoprodeck.com/api-guide/
@@ -10,9 +12,11 @@ import { DeckBuildingScreen } from "./components/screen/DeckBuildingScreen";
 
 const YuGiBuilderApp = () => {
   return (
-    <ChakraProvider>
-      <DeckBuildingScreen />
-    </ChakraProvider>
+    <Provider store={store}>
+      <ChakraProvider>
+        <DeckBuildingScreen />
+      </ChakraProvider>
+    </Provider>
   );
 };
 

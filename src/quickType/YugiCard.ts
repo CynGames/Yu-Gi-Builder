@@ -1,8 +1,8 @@
-export interface YugiCard {
-  data: Datum[];
+export interface YugiohCards {
+  data: YugiohCard[];
 }
 
-export interface Datum {
+export interface YugiohCard {
   id: number;
   name: string;
   type: string;
