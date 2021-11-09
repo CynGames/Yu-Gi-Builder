@@ -9,14 +9,22 @@ import { RiFilter3Line } from "react-icons/ri";
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { useActions } from "./hooks/useActions";
 import { useTypedSelector } from "./hooks/useTypedSelector";
+import { YugiohCard } from "../quickType/YugiCard";
 
 // Mejor forma de pasar props mediante redux a hijos. (setFilteredArray)
 // Que type ponerle a los setState pasados como props.
 // Re-render hell
 
-export const CardFilter = ({ setFilteredArray }: any): JSX.Element => {
+interface CardFilterProps {
+  fetchedCardsSetter: (e: YugiohCard[]) => void;
+}
+
+export const SearchBar = ({
+  fetchedCardsSetter,
+}: CardFilterProps): JSX.Element => {
   // Contiene el criterio de busqueda del input field
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState("Traptrix");
+
   const { fetchCards } = useActions();
   const { data: cards } = useTypedSelector((state) => state.fetch);
 
@@ -29,8 +37,14 @@ export const CardFilter = ({ setFilteredArray }: any): JSX.Element => {
 
     await fetchCards(inputValue);
 
-    setFilteredArray(cards?.data);
+    fetchedCardsSetter(cards.data);
+
+    setInputValue("");
   };
+
+  useEffect(() => {
+    fetchedCardsSetter(cards.data);
+  }, [cards]);
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,7 +53,7 @@ export const CardFilter = ({ setFilteredArray }: any): JSX.Element => {
 
     await fetchCards(inputValue);
 
-    setFilteredArray(cards?.data);
+    fetchedCardsSetter(cards.data);
 
     setInputValue("");
   };

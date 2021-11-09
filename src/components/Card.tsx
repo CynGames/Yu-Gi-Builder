@@ -1,28 +1,36 @@
 import React from "react";
 import { Image } from "@chakra-ui/image";
+import { useActions } from "./hooks/useActions";
+import { YugiohCard } from "../quickType/YugiCard";
+import { useTypedSelector } from "./hooks/useTypedSelector";
+import { useEffect } from "react";
 
-interface Images {
-  id: string;
-  url: string;
-  name: string;
-  width?: number;
+interface CardProps {
+  card: YugiohCard;
+  isFromUserDeck: boolean;
 }
 
-export const Card = ({ id, name, url, width = 25 }: Images) => {
-  const ConvertToPercent = () => width.toString() + "%";
+export const Card = ({ card, isFromUserDeck }: CardProps): JSX.Element => {
+  const { cardClickEvent, cardResetEvent } = useActions();
+  const { card_images } = card;
 
-  const widthInPercent = ConvertToPercent();
+  const onClickHandler = async (e: React.SyntheticEvent) => {
+    console.log("Card Added");
+    await cardClickEvent(card);
 
-  const onClickHandler = (e: React.SyntheticEvent) => {
-    console.log(`Click Ocurrido en ${name}`);
+    await cardResetEvent();
+  };
+
+  const onClickRemover = async (e: React.SyntheticEvent) => {
+    console.log("Card Removed");
   };
 
   return (
     <Image
-      width={widthInPercent}
+      width="25%"
       padding="1.5px"
-      src={url}
-      onClick={onClickHandler}
+      src={card_images[0].image_url}
+      onClick={isFromUserDeck ? onClickRemover : onClickHandler}
     />
   );
 };

@@ -1,5 +1,11 @@
-export interface YugiohCards {
+export interface FetchedCards {
   data: YugiohCard[];
+}
+
+export interface UserDeck {
+  main: YugiohCard[];
+  extra: YugiohCard[];
+  side: YugiohCard[];
 }
 
 export interface YugiohCard {
@@ -14,8 +20,13 @@ export interface YugiohCard {
   attribute: string;
   archetype: string;
   card_sets: CardSet[];
+  banlist_info: BanlistInfo;
   card_images: CardImage[];
   card_prices: CardPrice[];
+}
+
+export interface BanlistInfo {
+  ban_tcg: string;
 }
 
 export interface CardImage {

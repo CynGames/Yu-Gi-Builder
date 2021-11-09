@@ -1,23 +1,34 @@
-import React from "react";
-import { YugiohCard } from "../../../quickType/YugiCard";
+import { YugiohCard } from "..";
+import { CardActionType } from "../action-types/index";
+import { CardEventAction } from "../actions";
 
 interface CardState {
-  loading: boolean;
-  error: unknown;
+  isPicking: boolean;
   isInspecting: boolean;
-  data: YugiohCard | undefined;
+  card: YugiohCard | undefined;
 }
 
 const initialState = {
-  loading: false,
-  error: null,
+  isPicking: false,
   isInspecting: false,
-  data: undefined,
+  card: undefined,
 };
 
 export const cardReducer = (
   state: CardState = initialState,
-  action: any
+  action: CardEventAction
 ): CardState => {
-  return state;
+  switch (action.type) {
+    case CardActionType.CARD_EVENT_CLICK:
+      return { isPicking: true, isInspecting: false, card: action.payload };
+
+    case CardActionType.CARD_EVENT_INSPECT:
+      return { isPicking: false, isInspecting: true, card: action.payload };
+
+    case CardActionType.CARD_EVENT_RESET:
+      return initialState;
+
+    default:
+      return state;
+  }
 };

@@ -1,11 +1,13 @@
 import { combineReducers } from "redux";
 import { cardReducer } from "./cardReducer";
+import { DeckReducer } from "./deckReducer";
 import { fetchReducer } from "./fetchReducer";
 
 // Cada reducer es un slice...posiblemente.
 const reducers = combineReducers({
   card: cardReducer,
   fetch: fetchReducer,
+  deck: DeckReducer,
 });
 
 export default reducers;

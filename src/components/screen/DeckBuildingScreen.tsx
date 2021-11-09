@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { CardGrid } from "../CardGrid";
-import { YugiohCards } from "../../quickType/YugiCard";
-import CardSearchNavBar from "../CardSearchNavBar";
+import { YugiohCard, UserDeck } from "../../quickType/YugiCard";
 import Navbar from "../Navbar";
-import UserDeck from "../UserDeck";
 import { Box, Center, Text } from "@chakra-ui/layout";
+import { SearchBar } from "../SearchBar";
+import { UserDeckGrid } from "../UserDeckGrid";
 
 // Color Picker: https://coolors.co/59c3c3-52489c-ebebeb-cad2c5-84a98c
 // "banlist_info": {
 //   "ban_tcg": "Limited",
 //   "ban_ocg": "Semi-Limited"
+//   "ban_ocg": "Banned"
 // },
 
 // Acordarse de agregar indicadores de limited, semi o forbidden
@@ -32,9 +33,21 @@ import { Box, Center, Text } from "@chakra-ui/layout";
 
 /// Consulta JSX.Element
 
+// const init = {
+//   main: [],
+//   extra: [],
+//   side: [],
+// };
+
 export const DeckBuildingScreen = (): JSX.Element => {
   // Este array contiene los resultados del fetch.
-  const [filteredArray, setFilteredArray] = useState<YugiohCards[]>();
+  // const [deckCollection, setDeckCollection] = useState<UserDeck>(init);
+  const [fetchedCards, setFetchedCards] = useState<YugiohCard[]>([]);
+
+  // useEffect(() => {
+  //   Sacar el deck del localStorage si existe
+  //
+  // }, []);
 
   return (
     <Box bg="#392B58">
@@ -43,12 +56,18 @@ export const DeckBuildingScreen = (): JSX.Element => {
       </Box>
 
       <Box m="2">
-        <UserDeck />
-        <CardSearchNavBar setFilteredArray={(e: any) => setFilteredArray(e)} />
+        <Box>
+          <UserDeckGrid />
+        </Box>
 
         <Box>
-          {filteredArray && (
-            <CardGrid filteredArray={filteredArray} cardWidth={20} />
+          <SearchBar fetchedCardsSetter={setFetchedCards} />
+        </Box>
+
+        {/* Actualizar luego debajo de esto */}
+        <Box>
+          {fetchedCards && (
+            <CardGrid cardsCollection={fetchedCards} isFromUserDeck={false} />
           )}
         </Box>
       </Box>
