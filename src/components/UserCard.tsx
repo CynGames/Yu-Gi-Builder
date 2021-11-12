@@ -1,23 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Image } from "@chakra-ui/image";
 import { useActions } from "./hooks/useActions";
 import { YugiohCard } from "../quickType/YugiCard";
 import { useTypedSelector } from "./hooks/useTypedSelector";
-import { useEffect } from "react";
 
-interface CardProps {
+interface UserCardProps {
   card: YugiohCard;
+  indexID: number;
+  isSideDeck: boolean;
 }
 
-export const Card = ({ card }: CardProps): JSX.Element => {
+export const UserCard = ({
+  card,
+  indexID,
+  isSideDeck,
+}: UserCardProps): JSX.Element => {
   const { deck } = useTypedSelector((state) => state.deck);
-  const { cardClickEvent, cardResetEvent } = useActions();
+
+  const { removeCardFromDeck } = useActions();
   const { card_images } = card;
 
   const onClickHandler = async (e: React.SyntheticEvent) => {
-    await cardClickEvent(card);
-
-    await cardResetEvent();
+    await removeCardFromDeck(deck, card, indexID, isSideDeck);
   };
 
   return (

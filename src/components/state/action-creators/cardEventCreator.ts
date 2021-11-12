@@ -7,7 +7,7 @@ export const cardClickEvent = (card: YugiohCard) => {
   return (dispatch: Dispatch<CardEventAction>) => {
     dispatch({
       type: CardActionType.CARD_EVENT_CLICK,
-      payload: card,
+      card: card,
     });
   };
 };

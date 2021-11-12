@@ -3,15 +3,17 @@ import { CardFetchAction } from "../actions";
 import { FetchActionType } from "../action-types";
 
 interface FetchState {
+  term: string;
   loading: boolean;
   error: unknown;
-  data: FetchedCards;
+  cards: FetchedCards;
 }
 
 const initialState = {
+  term: "",
   loading: false,
   error: null,
-  data: {
+  cards: {
     data: [],
   },
 };
@@ -22,13 +24,28 @@ export const fetchReducer = (
 ): FetchState => {
   switch (action.type) {
     case FetchActionType.CARD_FETCH_INIT:
-      return { loading: true, error: null, data: initialState.data };
+      return {
+        term: action.term,
+        loading: true,
+        error: null,
+        cards: state.cards,
+      };
 
     case FetchActionType.CARD_FETCH_SUCCESS:
-      return { loading: false, error: null, data: action.payload };
+      return {
+        term: state.term,
+        loading: false,
+        error: null,
+        cards: action.payload,
+      };
 
     case FetchActionType.CARD_FETCH_ERROR:
-      return { loading: false, error: action.payload, data: initialState.data };
+      return {
+        term: state.term,
+        loading: false,
+        error: action.payload,
+        cards: state.cards,
+      };
 
     default:
       return state;

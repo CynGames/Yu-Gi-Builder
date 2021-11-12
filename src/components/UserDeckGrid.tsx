@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { YugiohCard } from "./state";
 import { useTypedSelector } from "./hooks/useTypedSelector";
 import { useActions } from "./hooks/useActions";
+import { UserDeck } from "../quickType/YugiCard";
+import { UserCardGrid } from "./UserCardGrid";
 
 // interface UserDeckGridProps {
 //   userDeck: UserDeck;
@@ -17,13 +19,10 @@ import { useActions } from "./hooks/useActions";
 // }
 
 export const UserDeckGrid = (): JSX.Element => {
-  const [mainDeck, setInMainDeck] = useState<YugiohCard[]>([]);
-  const [extraDeck, setInExtraDeck] = useState<YugiohCard[]>([]);
-  const [sideDeck, setInSideDeck] = useState<YugiohCard[]>([]);
-
   const { updateDeckState } = useActions();
   const { card } = useTypedSelector((state) => state.card);
-  // const { deck } = useTypedSelector((state) => state.deck);
+  const { deck, shouldUpdate } = useTypedSelector((state) => state.deck);
+  const { isSideDeckingState } = useTypedSelector((state) => state.setting);
 
   // Sacar side o main disparando una action que altere el state.menu.
 
@@ -31,41 +30,27 @@ export const UserDeckGrid = (): JSX.Element => {
   // Actualizar el clickEvent para que puedas pasarle la opcion de hacer un trigger (de undefined a true.)
 
   useEffect(() => {
+    // Setup inicial para cargar la data del localstorage al store.
+    // Luego, shouldUpdate deberia de cargar el store al local
+  }, []);
+
+  useEffect(() => {
     if (card) {
-      const deck = getChosenDeck(card);
+      const chosenDeck = getChosenDeck(card);
+      const isDeckFull = isChosenDeckFull(chosenDeck);
+      const cardMaxAmount = getCardMaxAmount(card);
+      const cardPresentAmount = getCardPresentAmount(card, chosenDeck);
 
-      const isDeckFull = isChosenDeckFull(deck);
-
-      const cardMaxAmount = getMaxAmount(card);
-
-      const cardAmountPresentInDeck = cardAmountPresentInChosenDeck(card, deck);
-
-      if (cardAmountPresentInDeck < cardMaxAmount && !isDeckFull)
-        setCardInChosenDeck(card);
+      if (cardMaxAmount > cardPresentAmount && !isDeckFull) {
+        updateDeckState(setCardInDeck(card));
+      }
     }
-
-    updateDeckState({ main: mainDeck, extra: extraDeck, side: sideDeck });
   }, [card]);
 
-  const setCardInChosenDeck = (card: YugiohCard) => {
-    if (isSideDeckSelected()) setInSideDeck([...sideDeck, card]);
-
-    if (isExtraDeckType(card)) setInExtraDeck([...extraDeck, card]);
-    else setInMainDeck([...mainDeck, card]);
-  };
-
   const getChosenDeck = (card: YugiohCard): YugiohCard[] => {
-    if (isSideDeckSelected()) return sideDeck;
-    if (isExtraDeckType(card)) return extraDeck;
-    return mainDeck;
-  };
-
-  const isSideDeckSelected = (): boolean => {
-    return false;
-  };
-
-  const isChosenDeckFull = (deck: YugiohCard[]): boolean => {
-    return deck != mainDeck ? deck.length == 15 : deck.length == 60;
+    if (isSideDeckingState) return deck.side;
+    if (isExtraDeckType(card)) return deck.extra;
+    return deck.main;
   };
 
   const isExtraDeckType = (card: YugiohCard): boolean => {
@@ -85,20 +70,11 @@ export const UserDeckGrid = (): JSX.Element => {
     }
   };
 
-  const cardAmountPresentInChosenDeck = (
-    card: YugiohCard,
-    deck: YugiohCard[]
-  ) => {
-    let currentAmountInDeck: number = 0;
-
-    deck.forEach((cardFromDeck) => {
-      if (cardFromDeck.name === card.name) currentAmountInDeck++;
-    });
-
-    return currentAmountInDeck;
+  const isChosenDeckFull = (deckArg: YugiohCard[]): boolean => {
+    return deckArg == deck.main ? deckArg.length == 60 : deckArg.length == 15;
   };
 
-  const getMaxAmount = (card: YugiohCard): number => {
+  const getCardMaxAmount = (card: YugiohCard): number => {
     if (card.banlist_info === undefined) return 3;
 
     let limitedCardMaxAmount: string = card.banlist_info.ban_tcg;
@@ -115,6 +91,25 @@ export const UserDeckGrid = (): JSX.Element => {
     }
   };
 
+  const getCardPresentAmount = (card: YugiohCard, deck: YugiohCard[]) => {
+    let currentAmountInDeck: number = 0;
+
+    deck.forEach((cardFromDeck) => {
+      if (cardFromDeck.name === card.name) currentAmountInDeck++;
+    });
+
+    return currentAmountInDeck;
+  };
+
+  const setCardInDeck = (card: YugiohCard): UserDeck => {
+    if (isSideDeckingState)
+      return { main: deck.main, extra: deck.extra, side: [...deck.side, card] };
+    else if (isExtraDeckType(card))
+      return { main: deck.main, extra: [...deck.extra, card], side: deck.side };
+    else
+      return { main: [...deck.main, card], extra: deck.extra, side: deck.side };
+  };
+
   return (
     <Flex width="100%" flexDir="column">
       <Center marginY="5px" textColor="white" fontWeight="bold">
@@ -128,7 +123,7 @@ export const UserDeckGrid = (): JSX.Element => {
         flex="1"
         p="2.5px"
       >
-        <CardGrid cardsCollection={mainDeck} isFromUserDeck={true} />
+        <UserCardGrid cardsCollection={deck.main} isSideDeck={false} />
       </Box>
       <Spacer m="5px" />
       <Box
@@ -139,22 +134,26 @@ export const UserDeckGrid = (): JSX.Element => {
         flex="1"
         p="2.5px"
       >
-        <CardGrid cardsCollection={extraDeck} isFromUserDeck={true} />
+        <UserCardGrid cardsCollection={deck.extra} isSideDeck={false} />
       </Box>
 
-      <Center marginY="5px" textColor="white" fontWeight="bold">
-        Side Deck
-      </Center>
-      <Box
-        bg="black"
-        fontWeight="bold"
-        textColor="white"
-        alignSelf="center"
-        flex="1"
-        p="2.5px"
-      >
-        <CardGrid cardsCollection={sideDeck} isFromUserDeck={true} />
-      </Box>
+      {deck.side.length > 0 && (
+        <>
+          <Center marginY="5px" textColor="white" fontWeight="bold">
+            Side Deck
+          </Center>
+          <Box
+            bg="black"
+            fontWeight="bold"
+            textColor="white"
+            alignSelf="center"
+            flex="1"
+            p="2.5px"
+          >
+            <UserCardGrid cardsCollection={deck.side} isSideDeck={true} />
+          </Box>
+        </>
+      )}
     </Flex>
   );
 };

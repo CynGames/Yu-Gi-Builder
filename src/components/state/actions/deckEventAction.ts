@@ -1,6 +1,22 @@
 import { DeckActionType } from "../action-types";
 import { UserDeck, YugiohCard } from "..";
 
+interface DeckUpdateInit {
+  type: DeckActionType.UPDATE_DECK_INIT;
+  shouldUpdate: boolean;
+}
+
+interface DeckUpdateSuccess {
+  type: DeckActionType.UPDATE_DECK_SUCCESS;
+  shouldUpdate: boolean;
+}
+
+interface DeckUpdateError {
+  type: DeckActionType.UPDATE_DECK_ERROR;
+  error: unknown;
+  shouldUpdate: boolean;
+}
+
 interface DeckCreationInit {
   type: DeckActionType.CREATE_DECK_INIT;
 }
@@ -32,12 +48,12 @@ interface CardAdditionInit {
 
 interface CardAdditionSuccess {
   type: DeckActionType.ADD_CARD_SUCCESS;
-  payload: UserDeck;
+  deck: UserDeck;
 }
 
 interface CardAdditionError {
   type: DeckActionType.ADD_CARD_ERROR;
-  payload: unknown;
+  error: unknown;
   deck: UserDeck;
 }
 
@@ -48,16 +64,19 @@ interface CardRemovalInit {
 
 interface CardRemovalSuccess {
   type: DeckActionType.REMOVE_CARD_SUCCESS;
-  payload: UserDeck;
+  deck: UserDeck;
 }
 
 interface CardRemovalError {
   type: DeckActionType.REMOVE_CARD_ERROR;
-  payload: unknown;
+  error: unknown;
   deck: UserDeck;
 }
 
 export type DeckEventAction =
+  | DeckUpdateInit
+  | DeckUpdateSuccess
+  | DeckUpdateError
   | DeckCreationInit
   | DeckCreationSuccess
   | DeckCreationError

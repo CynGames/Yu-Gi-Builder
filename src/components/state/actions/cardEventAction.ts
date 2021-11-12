@@ -3,12 +3,12 @@ import { CardActionType } from "../action-types";
 
 interface CardEventClick {
   type: CardActionType.CARD_EVENT_CLICK;
-  payload: YugiohCard;
+  card: YugiohCard;
 }
 
 interface CardEventInspect {
   type: CardActionType.CARD_EVENT_INSPECT;
-  payload: YugiohCard;
+  card: YugiohCard;
 }
 
 interface CardEventReset {

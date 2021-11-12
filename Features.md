@@ -1,10 +1,11 @@
 # Planned Main Features
 
 - Deck Builder (Main, Side & Extra)
-- Price Search
+- Estimated Price by Seller
 - Filter by Race & Card Type
 - Check Deck Validity
 - Account Creation
+- UI Indicators for banned and limited cards
 
 ## Features Wishlist
 

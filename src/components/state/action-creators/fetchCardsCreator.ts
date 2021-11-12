@@ -4,19 +4,46 @@ import { FetchedCards } from "..";
 import { FetchActionType } from "../action-types";
 import { CardFetchAction } from "../actions/index";
 
-export const fetchCards = (term: string) => {
+export const setFetchTerm = (term: string) => {
   return async (dispatch: Dispatch<CardFetchAction>) => {
-    dispatch({
+    await dispatch({
       type: FetchActionType.CARD_FETCH_INIT,
+      term: term,
+    });
+  };
+};
+
+export const fetchCards = (fname: string, keywords: string[]) => {
+  return async (dispatch: Dispatch<CardFetchAction>) => {
+    await dispatch({
+      type: FetchActionType.CARD_FETCH_INIT,
+      term: fname,
     });
 
     try {
       const url = `https://db.ygoprodeck.com/api/v7/cardinfo.php`;
-      const { data } = await axios.get<FetchedCards>(url, {
+      const CSKeywords: string = keywords.join(",");
+      const TypeFetch = {
         params: {
-          fname: term,
+          fname: fname,
+          type: CSKeywords,
+          num: 20,
+          offset: 0,
         },
-      });
+      };
+
+      const NamedFetch = {
+        params: {
+          fname: fname,
+          num: 20,
+          offset: 0,
+        },
+      };
+
+      const { data } = await axios.get<FetchedCards>(
+        url,
+        keywords.length > 0 ? TypeFetch : NamedFetch
+      );
 
       dispatch({
         type: FetchActionType.CARD_FETCH_SUCCESS,

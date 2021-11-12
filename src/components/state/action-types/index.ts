@@ -11,6 +11,10 @@ export enum CardActionType {
 }
 
 export enum DeckActionType {
+  UPDATE_DECK_INIT = "[DECK EVENT] Deck Update Initiated",
+  UPDATE_DECK_SUCCESS = "[DECK EVENT] Deck Update Successful",
+  UPDATE_DECK_ERROR = "[DECK EVENT] Deck Update Failed",
+
   CREATE_DECK_INIT = "[DECK EVENT] Deck Creation Initiated",
   CREATE_DECK_SUCCESS = "[DECK EVENT] Deck Creation Successful",
   CREATE_DECK_ERROR = "[DECK EVENT] Deck Creation Failed",
@@ -28,7 +32,13 @@ export enum DeckActionType {
   REMOVE_CARD_ERROR = "[DECK EVENT] Card Removal Failed",
 }
 
-export enum AuthActionType {
-  Login = "[AUTH] Login",
-  Logout = "[AUTH] Logout",
+export enum SettingActionType {
+  SET_SIDE_DECK_MODE = "[SETTING] Picked cards go to Sidedeck if enabled",
+  SET_ADVANCED_FILTER_MODE = "[SETTING] Show/Hide advanced filtering options",
+  SET_PRICING_MODE = "[SETTING] Show/Hide pricing area",
+}
+
+export enum AdvancedFilterActionType {
+  ADD_FILTER_KEYWORD = "[FILTER] Adds a new keyword",
+  REMOVE_FILTER_KEYWORD = "[FILTER] Removes a new keyword",
 }

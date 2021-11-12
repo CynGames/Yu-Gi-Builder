@@ -3,6 +3,7 @@ import { FetchedCards } from "../index";
 
 interface CardFetchInit {
   type: FetchActionType.CARD_FETCH_INIT;
+  term: string;
 }
 
 interface CardFetchSuccess {

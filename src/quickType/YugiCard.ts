@@ -9,6 +9,7 @@ export interface UserDeck {
 }
 
 export interface YugiohCard {
+  indexID: number;
   id: number;
   name: string;
   type: string;
