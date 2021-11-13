@@ -26,12 +26,6 @@ import { useTypedSelector } from "../hooks/useTypedSelector";
 // Preguntar si es mejor crear propiedades personalizadas o es mejor siempre dejar payload.
 // Preguntar rendering order
 
-// Cambios de UI:
-// Crear un par de botones para clear o save
-// Numero de cantidad de cartas presentes top right.
-// Pricing box middle debajo de side.
-// Crear un espacio placeholder para cada deck area
-
 // Si se alcanza:
 // Pulir codebase
 // Limpiar los reducers con "state"
@@ -39,11 +33,14 @@ import { useTypedSelector } from "../hooks/useTypedSelector";
 // Atender todos los known issues
 
 // Proximo Stage:
+// Pricing box middle debajo de side.
+// Crear un par de botones para clear o save
 // Permitir deck naming
 // Saved/Selected Player Deck
 // Implementar inspect
 // Agregar indicadores de limited, semi o forbidden, cantidad agregada
 // Mostrar pricing de todas las cartas elegidas.
+// Capacidad para ordenarlas
 
 export const DeckBuildingScreen = (): JSX.Element => {
   return (
@@ -66,8 +63,8 @@ export const DeckBuildingScreen = (): JSX.Element => {
         </Box>
       </Box>
 
-      <Box position="relative" width="100%" paddingY="20px">
-        <Center>
+      <Box paddingY="20px">
+        <Center position="absolute" bottom="0" width="100%" paddingY="12.5px">
           <Text textColor="white" fontWeight="bold">
             Yu-Gi-Builder
           </Text>

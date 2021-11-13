@@ -1,4 +1,4 @@
-import { Box, Flex, Center } from "@chakra-ui/layout";
+import { Box, Flex, Center, VStack } from "@chakra-ui/layout";
 import { CardGrid } from "./CardGrid";
 import { Spacer } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -113,26 +113,30 @@ export const UserDeckGrid = (): JSX.Element => {
   return (
     <Flex width="100%" flexDir="column">
       <Center marginY="5px" textColor="white" fontWeight="bold">
-        Main Deck
+        Main Deck ({deck.main.length})
       </Center>
       <Box
-        bg="black"
+        bg="#241B36"
         fontWeight="bold"
         textColor="white"
         alignSelf="center"
         flex="1"
         p="2.5px"
+        width="100%"
+        minHeight="488.88px"
       >
         <UserCardGrid cardsCollection={deck.main} isSideDeck={false} />
       </Box>
       <Spacer m="5px" />
       <Box
-        bg="black"
+        bg="#241B36"
         fontWeight="bold"
         textColor="white"
         alignSelf="center"
         flex="1"
         p="2.5px"
+        width="100%"
+        minHeight="122.22px"
       >
         <UserCardGrid cardsCollection={deck.extra} isSideDeck={false} />
       </Box>
@@ -143,12 +147,14 @@ export const UserDeckGrid = (): JSX.Element => {
             Side Deck
           </Center>
           <Box
-            bg="black"
+            bg="#241B36"
             fontWeight="bold"
             textColor="white"
             alignSelf="center"
             flex="1"
             p="2.5px"
+            width="100%"
+            minHeight="122.22px"
           >
             <UserCardGrid cardsCollection={deck.side} isSideDeck={true} />
           </Box>
