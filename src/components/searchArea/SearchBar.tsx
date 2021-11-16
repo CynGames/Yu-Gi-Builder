@@ -12,28 +12,18 @@ import {
 import { Icon } from "@chakra-ui/react";
 import { FaFilter, FaDollarSign } from "react-icons/fa";
 import { RiArrowDownSLine, RiFilter3Line } from "react-icons/ri";
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuOptionGroup,
-} from "@chakra-ui/react";
-import { useActions } from "./hooks/useActions";
-import { useTypedSelector } from "./hooks/useTypedSelector";
+import { Menu, MenuButton, MenuList, MenuOptionGroup } from "@chakra-ui/react";
+import { useActions } from "../hooks/useActions";
+import { useTypedSelector } from "../hooks/useTypedSelector";
 import { MultiSelectionItem } from "./MultiSelectionItem";
-import { Keyword } from "./state/reducers/advancedFilterReducer";
-import { setFetchTerm } from "./state/action-creators";
-
-// Mejor forma de pasar props mediante redux a hijos. (setFilteredArray)
-// Que type ponerle a los setState pasados como props.
-// Re-render hell
+import { Keyword } from "../state/reducers/searchReducer";
+import { TypeItem } from "./TypeItem";
 
 export const SearchBar = (): JSX.Element => {
-  // Contiene el criterio de busqueda del input field
-  const [inputValue, setInputValue] = useState("");
-  const { isOpen, onToggle, onOpen, onClose } = useDisclosure();
-
+  const { isSideDeckingState, advancedFilteringState, pricingState } =
+    useTypedSelector((state) => state.setting);
+  const { filterByKeywords } = useTypedSelector((state) => state.search);
+  const { term } = useTypedSelector((state) => state.fetch);
   const {
     fetchCards,
     setSideDeckMode,
@@ -42,11 +32,26 @@ export const SearchBar = (): JSX.Element => {
     addFilterKeyword,
     setFetchTerm,
   } = useActions();
-  const { isSideDeckingState, advancedFilteringState, pricingState } =
-    useTypedSelector((state) => state.setting);
 
-  const { filterByKeywords } = useTypedSelector((state) => state.filter);
-  const { term } = useTypedSelector((state) => state.fetch);
+  const { isOpen, onToggle } = useDisclosure();
+  const CardTypes = [Keyword.Spell, Keyword.Trap];
+
+  const MonsterTypes = [
+    Keyword.Normal,
+    Keyword.Effect,
+    Keyword.Flip,
+    Keyword.Synchro,
+    Keyword.Xyz,
+    Keyword.Link,
+    Keyword.Gemini,
+    Keyword.Fusion,
+    Keyword.Pendulum,
+    Keyword.Ritual,
+    Keyword.Spirit,
+    Keyword.Toon,
+    Keyword.Tuner,
+    Keyword.Union,
+  ];
 
   useEffect(() => {
     async function fetcher() {
@@ -140,7 +145,7 @@ export const SearchBar = (): JSX.Element => {
       </Flex>
 
       {advancedFilteringState && (
-        <Menu autoSelect={false} closeOnBlur={true} isOpen={isOpen}>
+        <Menu autoSelect={false} isOpen={isOpen}>
           <HStack
             p="10px"
             borderWidth="1px"
@@ -171,98 +176,14 @@ export const SearchBar = (): JSX.Element => {
                 filterByKeywords.includes(Keyword.Trap)) || (
                 <MenuGroup fontSize="1rem" title="Card Type">
                   <Text fontSize="0.9rem" pl="10px">
-                    {/* <MenuItem onCLick={() => addFilterKeyword(Keyword.Monster)}>Monster</MenuItem> */}
-
-                    {filterByKeywords.includes(Keyword.Spell) || (
-                      <MenuItem onClick={() => addFilterKeyword(Keyword.Spell)}>
-                        Spell
-                      </MenuItem>
-                    )}
-                    {filterByKeywords.includes(Keyword.Trap) || (
-                      <MenuItem onClick={() => addFilterKeyword(Keyword.Trap)}>
-                        Trap
-                      </MenuItem>
-                    )}
+                    {TypesGenerator(CardTypes)}
                   </Text>
                 </MenuGroup>
               )}
               <MenuDivider mb="15px" />
               <MenuOptionGroup fontSize="1rem" title="Monster Type">
                 <Text fontSize="0.9rem" pl="10px">
-                  {filterByKeywords.includes(Keyword.Normal) || (
-                    <MenuItem onClick={() => addFilterKeyword(Keyword.Normal)}>
-                      Normal
-                    </MenuItem>
-                  )}
-
-                  {filterByKeywords.includes(Keyword.Effect) || (
-                    <MenuItem onClick={() => addFilterKeyword(Keyword.Effect)}>
-                      Effect
-                    </MenuItem>
-                  )}
-
-                  {filterByKeywords.includes(Keyword.Union) || (
-                    <MenuItem onClick={() => addFilterKeyword(Keyword.Union)}>
-                      Union
-                    </MenuItem>
-                  )}
-                  {filterByKeywords.includes(Keyword.Spirit) || (
-                    <MenuItem onClick={() => addFilterKeyword(Keyword.Spirit)}>
-                      Spirit
-                    </MenuItem>
-                  )}
-                  {filterByKeywords.includes(Keyword.Flip) || (
-                    <MenuItem onClick={() => addFilterKeyword(Keyword.Flip)}>
-                      Flip
-                    </MenuItem>
-                  )}
-                  {filterByKeywords.includes(Keyword.Gemini) || (
-                    <MenuItem onClick={() => addFilterKeyword(Keyword.Gemini)}>
-                      Gemini
-                    </MenuItem>
-                  )}
-                  {filterByKeywords.includes(Keyword.Toon) || (
-                    <MenuItem onClick={() => addFilterKeyword(Keyword.Toon)}>
-                      Toon
-                    </MenuItem>
-                  )}
-                  {filterByKeywords.includes(Keyword.Ritual) || (
-                    <MenuItem onClick={() => addFilterKeyword(Keyword.Ritual)}>
-                      Ritual
-                    </MenuItem>
-                  )}
-                  {filterByKeywords.includes(Keyword.Fusion) || (
-                    <MenuItem onClick={() => addFilterKeyword(Keyword.Fusion)}>
-                      Fusion
-                    </MenuItem>
-                  )}
-                  {filterByKeywords.includes(Keyword.Synchro) || (
-                    <MenuItem onClick={() => addFilterKeyword(Keyword.Synchro)}>
-                      Synchro
-                    </MenuItem>
-                  )}
-                  {filterByKeywords.includes(Keyword.Xyz) || (
-                    <MenuItem onClick={() => addFilterKeyword(Keyword.Xyz)}>
-                      Xyz
-                    </MenuItem>
-                  )}
-                  {filterByKeywords.includes(Keyword.Pendulum) || (
-                    <MenuItem
-                      onClick={() => addFilterKeyword(Keyword.Pendulum)}
-                    >
-                      Pendulum
-                    </MenuItem>
-                  )}
-                  {filterByKeywords.includes(Keyword.Link) || (
-                    <MenuItem onClick={() => addFilterKeyword(Keyword.Link)}>
-                      Link
-                    </MenuItem>
-                  )}
-                  {filterByKeywords.includes(Keyword.Tuner) || (
-                    <MenuItem onClick={() => addFilterKeyword(Keyword.Tuner)}>
-                      Tuner
-                    </MenuItem>
-                  )}
+                  {TypesGenerator(MonsterTypes)}
                 </Text>
               </MenuOptionGroup>
             </MenuList>
@@ -272,4 +193,10 @@ export const SearchBar = (): JSX.Element => {
       )}
     </Flex>
   );
+
+  function TypesGenerator(Types: string[]): React.ReactNode {
+    return Types.map((mt) => (
+      <TypeItem keyword={mt} onClick={() => addFilterKeyword(mt)} />
+    ));
+  }
 };

@@ -1,8 +1,7 @@
 import { Button } from "@chakra-ui/button";
 import { Box, Flex, Text } from "@chakra-ui/layout";
-import React from "react";
 
-const Navbar = () => {
+export const Navbar = (): JSX.Element => {
   return (
     <Flex bgColor="gray.500" justifyContent="center">
       <Text
@@ -21,5 +20,3 @@ const Navbar = () => {
     </Flex>
   );
 };
-
-export default Navbar;

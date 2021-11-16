@@ -1,7 +1,7 @@
-import { AdvancedFilterAction } from "..";
-import { AdvancedFilterActionType } from "../action-types";
+import { SearchAction } from "..";
+import { SearchActionType } from "../action-types";
 
-interface AdvancedFilterState {
+interface SearchState {
   filterByKeywords: string[];
 }
 
@@ -29,17 +29,17 @@ const initialState = {
   filterByKeywords: [],
 };
 
-export const advancedFilterReducer = (
-  state: AdvancedFilterState = initialState,
-  action: AdvancedFilterAction
+export const searchReducer = (
+  state: SearchState = initialState,
+  action: SearchAction
 ) => {
   switch (action.type) {
-    case AdvancedFilterActionType.ADD_FILTER_KEYWORD:
+    case SearchActionType.ADD_FILTER_KEYWORD:
       return { filterByKeywords: [...state.filterByKeywords, action.keyword] };
-    case AdvancedFilterActionType.REMOVE_FILTER_KEYWORD:
+    case SearchActionType.REMOVE_FILTER_KEYWORD:
       return {
         filterByKeywords: state.filterByKeywords.filter(
-          (item) => item != action.keyword
+          (keyword) => keyword != action.keyword
         ),
       };
 

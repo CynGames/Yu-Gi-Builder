@@ -3,15 +3,15 @@ import { cardReducer } from "./cardReducer";
 import { deckReducer } from "./deckReducer";
 import { fetchReducer } from "./fetchReducer";
 import { settingReducer } from "./settingReducer";
-import { advancedFilterReducer } from "./advancedFilterReducer";
+import { searchReducer } from "./searchReducer";
 
 // Cada reducer es un slice...posiblemente.
 const reducers = combineReducers({
-  setting: settingReducer,
   card: cardReducer,
   fetch: fetchReducer,
   deck: deckReducer,
-  filter: advancedFilterReducer,
+  setting: settingReducer,
+  search: searchReducer,
 });
 
 export default reducers;

@@ -1,38 +1,17 @@
-import { Box, Flex, Center, VStack } from "@chakra-ui/layout";
-import { CardGrid } from "./CardGrid";
+import { Box, Flex, Center } from "@chakra-ui/layout";
 import { Spacer } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { YugiohCard } from "./state";
-import { useTypedSelector } from "./hooks/useTypedSelector";
-import { useActions } from "./hooks/useActions";
-import { UserDeck } from "../quickType/YugiCard";
+import { useEffect } from "react";
+import { YugiohCard } from "./../state";
+import { useTypedSelector } from "./../hooks/useTypedSelector";
+import { useActions } from "./../hooks/useActions";
+import { UserDeck } from "../../quickType/YugiCard";
 import { UserCardGrid } from "./UserCardGrid";
 
-// interface UserDeckGridProps {
-//   userDeck: UserDeck;
-// }
-
-// const initialState = {
-//   main: [],
-//   extra: [],
-//   side: []
-// }
-
 export const UserDeckGrid = (): JSX.Element => {
-  const { updateDeckState } = useActions();
   const { card } = useTypedSelector((state) => state.card);
-  const { deck, shouldUpdate } = useTypedSelector((state) => state.deck);
+  const { deck } = useTypedSelector((state) => state.deck);
   const { isSideDeckingState } = useTypedSelector((state) => state.setting);
-
-  // Sacar side o main disparando una action que altere el state.menu.
-
-  // Cambiar el if del effect a un trigger.
-  // Actualizar el clickEvent para que puedas pasarle la opcion de hacer un trigger (de undefined a true.)
-
-  useEffect(() => {
-    // Setup inicial para cargar la data del localstorage al store.
-    // Luego, shouldUpdate deberia de cargar el store al local
-  }, []);
+  const { updateDeckState } = useActions();
 
   useEffect(() => {
     if (card) {
@@ -54,20 +33,15 @@ export const UserDeckGrid = (): JSX.Element => {
   };
 
   const isExtraDeckType = (card: YugiohCard): boolean => {
-    // Probar englobarlo en parentesis
-    switch (card.type) {
-      case "Fusion Monster":
-        return true;
-      case "Synchro Monster":
-        return true;
-      case "XYZ Monster":
-        return true;
-      case "Link Monster":
-        return true;
+    const ExtraDeckTypes = [
+      "Fusion Monster",
+      "Synchro Monster",
+      "Synchro Tuner Monster",
+      "XYZ Monster",
+      "Link Monster",
+    ];
 
-      default:
-        return false;
-    }
+    return ExtraDeckTypes.includes(card.type);
   };
 
   const isChosenDeckFull = (deckArg: YugiohCard[]): boolean => {

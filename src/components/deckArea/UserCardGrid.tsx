@@ -1,7 +1,6 @@
-import React from "react";
 import { Flex } from "@chakra-ui/layout";
-import { YugiohCard } from "./state";
 import { UserCard } from "./UserCard";
+import { YugiohCard } from "../state";
 
 interface UserCardGridProps {
   cardsCollection?: YugiohCard[];
@@ -12,8 +11,8 @@ export const UserCardGrid = ({
   cardsCollection,
   isSideDeck,
 }: UserCardGridProps) => {
-  const MapCards = (images: YugiohCard[] | undefined) => {
-    return images?.map((card, i) => (
+  const MapCards = (cards: YugiohCard[] | undefined) => {
+    return cards?.map((card, i) => (
       <UserCard key={i} indexID={i} card={card} isSideDeck={isSideDeck} />
     ));
   };

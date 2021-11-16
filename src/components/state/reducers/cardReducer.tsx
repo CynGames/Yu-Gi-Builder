@@ -5,13 +5,13 @@ import { CardEventAction } from "../actions";
 interface CardState {
   isPicking: boolean;
   isInspecting: boolean;
-  card?: YugiohCard | undefined;
+  card?: YugiohCard | null;
 }
 
 const initialState = {
   isPicking: false,
   isInspecting: false,
-  card: undefined,
+  card: null,
 };
 
 export const cardReducer = (
@@ -26,7 +26,7 @@ export const cardReducer = (
       return { isPicking: false, isInspecting: true, card: action.card };
 
     case CardActionType.CARD_EVENT_RESET:
-      return { isPicking: false, isInspecting: false, card: undefined };
+      return { isPicking: false, isInspecting: false, card: null };
 
     default:
       return state;

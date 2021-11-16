@@ -1,12 +1,13 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { YugiohCard } from "../quickType/YugiCard";
+import { useEffect, useState } from "react";
 import { Card } from "./Card";
 import { Flex } from "@chakra-ui/react";
-import { useTypedSelector } from "./hooks/useTypedSelector";
+import { useTypedSelector } from "../hooks/useTypedSelector";
+import { YugiohCard } from "../state";
 
 export const CardGrid = (): JSX.Element => {
-  const [cardData, setCardData] = useState<YugiohCard[]>();
   const { cards } = useTypedSelector((state) => state.fetch);
+
+  const [cardData, setCardData] = useState<YugiohCard[]>();
 
   const filterImages = () => {
     const fetchedCard = cards.data.map((card: YugiohCard) => card);
@@ -18,7 +19,6 @@ export const CardGrid = (): JSX.Element => {
   }, [cards]);
 
   const MapCards = (images: YugiohCard[] | undefined) => {
-    // return images?.map((img) => <Card key={img.id} {...img} />);
     return images?.map((card, i) => <Card key={i} card={card} />);
   };
 

@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Image } from "@chakra-ui/image";
-import { useActions } from "./hooks/useActions";
-import { YugiohCard } from "../quickType/YugiCard";
-import { useTypedSelector } from "./hooks/useTypedSelector";
+import { useActions } from "../hooks/useActions";
+import { YugiohCard } from "../../quickType/YugiCard";
+import { useTypedSelector } from "../hooks/useTypedSelector";
 
 interface UserCardProps {
   card: YugiohCard;
@@ -16,7 +16,6 @@ export const UserCard = ({
   isSideDeck,
 }: UserCardProps): JSX.Element => {
   const { deck } = useTypedSelector((state) => state.deck);
-
   const { removeCardFromDeck } = useActions();
   const { card_images } = card;
 

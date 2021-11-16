@@ -1,8 +1,8 @@
 import { Box, Button, Center } from "@chakra-ui/react";
 import React from "react";
-import { useActions } from "./hooks/useActions";
+import { useActions } from "../hooks/useActions";
 import { useEffect } from "react";
-import { useTypedSelector } from "./hooks/useTypedSelector";
+import { useTypedSelector } from "../hooks/useTypedSelector";
 
 interface MultiSelectionItemPros {
   term: string;
@@ -10,11 +10,10 @@ interface MultiSelectionItemPros {
 
 export const MultiSelectionItem = ({
   term: assignedTerm,
-}: MultiSelectionItemPros) => {
-  const { removeFilterKeyword, fetchCards } = useActions();
-
+}: MultiSelectionItemPros): JSX.Element => {
   const { term } = useTypedSelector((state) => state.fetch);
-  const { filterByKeywords } = useTypedSelector((state) => state.filter);
+  const { filterByKeywords } = useTypedSelector((state) => state.search);
+  const { removeFilterKeyword, fetchCards } = useActions();
 
   useEffect(() => {
     fetchCards(term, filterByKeywords);
@@ -30,14 +29,14 @@ export const MultiSelectionItem = ({
   };
 
   return (
-    <Box marginY="2.5px">
+    <Box marginY="2.5px" zIndex="1">
       <Button
         size="sm"
         variant="unstyled"
         borderWidth="1px"
         ml="5px"
         p="10 0"
-        onClick={(e) => onClickHandler(e)}
+        onClick={onClickHandler}
       >
         <Center>{assignedTerm}</Center>
       </Button>
